@@ -14,10 +14,11 @@ const Pet = ({ pet, onEdit, onRemove }) => {
     <div className="pet-kind">{pet.kind}</div>
 
     <button className="adopt-btn" onClick={onRemove}>
-      <span role="img" aria-label="adopt this pet">
-        🏠
-      </span>
-    </button>
+  <span role="img" aria-label="adopt this pet">
+    🏠
+  </span>
+</button>
+
   </div>
   );
 };

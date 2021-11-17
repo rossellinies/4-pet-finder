@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
 import Modal from "react-modal";
+import PetForm from "./PetForm";
+
 
     const NewPetModal = ({ onCancel, onSave }) => {
         const [name, setName] = useState("");
@@ -7,6 +9,7 @@ import Modal from "react-modal";
         const [photo, setPhoto] = useState(null);
         const photoInput = useRef();
         const [errors, setErrors] = useState(null);
+        const [saving, setSaving] = useState(false);
 
     const updatePhoto = () => {
         const file = photoInput.current.files && photoInput.current.files[0];
@@ -20,6 +23,7 @@ import Modal from "react-modal";
 
     const submit = (event) => {
         event.preventDefault();
+        setSaving(true);
         onSave({
           name,
           kind,
@@ -28,7 +32,17 @@ import Modal from "react-modal";
         .catch((error) => {
             console.log(error);
             setErrors(error);
+            setSaving(false);
         });
+      };      
+
+      const NewPetModal = ({ onCancel, onSave }) => {
+        return (
+          <Modal isOpen={true} onRequestClose={onCancel}>
+            <h2>New Pet</h2>
+            <PetForm onCancel={onCancel} onSave={onSave} />
+          </Modal>
+        );
       };      
 
   return (
@@ -60,13 +74,14 @@ import Modal from "react-modal";
           <option value="cat">Cat</option>
           <option value="dog">Dog</option>
         </select>
+
         {errors && errors.kind && <div className="error">{errors.kind}</div>}
-        <button type="button" onClick={onCancel}>
-          Cancel
-        </button>
-        <button type="submit">Save</button>
+
+        <button disable={saving} type="button" onClick={onCancel}>Cancel</button>
+        <button disable={saving} type="submit">Save</button>
       </form>
     </Modal>
   );
 };
+
 export default NewPetModal;
